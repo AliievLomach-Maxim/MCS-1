@@ -9,14 +9,8 @@
 		"stock": 94,
 		"brand": "Apple",
 		"category": "smartphones",
-		"thumbnail": "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-		"images": [
-			"https://cdn.dummyjson.com/product-images/1/1.jpg",
-			"https://cdn.dummyjson.com/product-images/1/2.jpg",
-			"https://cdn.dummyjson.com/product-images/1/3.jpg",
-			"https://cdn.dummyjson.com/product-images/1/4.jpg",
-			"https://cdn.dummyjson.com/product-images/1/thumbnail.jpg"
-		]
+		"thumbnail": null,
+		"images": null
 	},
 	{
 		"id": 2,
@@ -29,12 +23,7 @@
 		"brand": "Apple",
 		"category": "smartphones",
 		"thumbnail": "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg",
-		"images": [
-			"https://cdn.dummyjson.com/product-images/2/1.jpg",
-			"https://cdn.dummyjson.com/product-images/2/2.jpg",
-			"https://cdn.dummyjson.com/product-images/2/3.jpg",
-			"https://cdn.dummyjson.com/product-images/2/thumbnail.jpg"
-		]
+		"images": null
 	},
 	{
 		"id": 3,
