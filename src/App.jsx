@@ -1,17 +1,52 @@
-import GenerateProductsList from './components/GenerateProductList/GenerateProductList'
-import GenerateProductsList2 from './components/GenerateProductsList2'
-import data from './data.json'
-import data2 from './data.json'
-import styles from './App.module.css'
+import Header from './components/Header/Header'
+// import Counter from './components/Counter/Counter'
+import Modal from './components/Modal/Modal'
+import { Component } from 'react'
+import ProductList from './components/ProductList/ProductList'
 
-const App = () => {
-	return (
-		<div className={styles.container} id={styles.some}>
-			<GenerateProductsList data={data} a='qwe' name='qwe' number={123}>
-				<div>qwrety</div>
-			</GenerateProductsList>
-			<GenerateProductsList2 data={data2} />
-		</div>
-	)
+class App extends Component {
+	state = {
+		isShowModal: false,
+	}
+
+	// showModal = () => {
+	// 	this.setState({ isShowModal: true })
+	// }
+
+	// hideModal = () => {
+	// 	this.setState({ isShowModal: false })
+	// }
+
+	// toggleModal = (toggle) => {
+	// 	if (toggle) this.setState({ isShowModal: true })
+	// 	else this.setState({ isShowModal: false })
+	// }
+	toggleModal = () => this.setState((prev) => ({ isShowModal: !prev.isShowModal }))
+
+	render() {
+		return (
+			<>
+				<Header showModal={this.showModal} toggleModal={this.toggleModal} />
+				{/* <Counter /> */}
+				<ProductList />
+				{this.state.isShowModal && (
+					<Modal hideModal={this.hideModal} toggleModal={this.toggleModal}>
+						some
+					</Modal>
+				)}
+			</>
+		)
+	}
 }
 export default App
+
+// const App = () => {
+// 	return (
+// 		<>
+// 			<Header />
+// 			<Counter />
+// 			{true&&<Modal>some</Modal>}
+// 		</>
+// 	)
+// }
+// export default App
