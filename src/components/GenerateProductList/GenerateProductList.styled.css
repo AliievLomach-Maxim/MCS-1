@@ -1,0 +1,12 @@
+/* .container {
+	background-color: red;
+} */
+.container.active {
+	background-color: gray;
+}
+.container.notActive {
+	background-color: red;
+}
+.container img {
+	width: 150px;
+}
