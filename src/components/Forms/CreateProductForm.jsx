@@ -6,22 +6,29 @@ class CreateProductForm extends Component {
 		description: '',
 		price: '',
 	}
+
+	// shouldComponentUpdate(nextProps, nextState) {
+	// 	if (nextProps.createProduct !== this.props.createProduct) return true
+	// 	if (nextState !== this.state) return true
+	// 	if (nextProps.counter.count !== this.prop.counter.count) return true
+	// 	return false
+	// }
+
 	handleSubmit = (e) => {
 		e.preventDefault()
 		this.props.createProduct(this.state)
 		this.setState({ title: '', description: '', price: '' })
 	}
 
-	// handleChange = (e) => {
-	// 	this.setState({ [e.target.name]: e.target.value })
-	// }
 	handleChange = ({ target: { name, value } }) => {
 		this.setState({ [name]: value })
 	}
 
 	render() {
+		console.log('render form')
 		return (
 			<form onSubmit={this.handleSubmit}>
+				<p>{this.props.counter.count}</p>
 				<div className='mb-3'>
 					<label htmlFor='exampleInputEmail1' className='form-label'>
 						Title
