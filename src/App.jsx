@@ -13,16 +13,15 @@ class App extends Component {
 
 	render() {
 		return (
-			<>
+			<div className='container'>
 				<Header showModal={this.showModal} toggleModal={this.toggleModal} />
-				{/* <Counter /> */}
 				<Products />
 				{this.state.isShowModal && (
 					<Modal hideModal={this.hideModal} toggleModal={this.toggleModal}>
 						some
 					</Modal>
 				)}
-			</>
+			</div>
 		)
 	}
 }
