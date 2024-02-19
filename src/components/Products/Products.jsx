@@ -1,72 +1,70 @@
-import { Component } from 'react'
+import { useEffect, useState } from 'react'
+import { deleteProductApi, getAllProductsApi } from '../../api/products'
 import CreateProductForm from '../Forms/CreateProductForm'
+import MyLoader from '../Loader'
 import ProductList from '../ProductList/ProductList'
-import data from '../../data.json'
-import { nanoid } from 'nanoid'
-// import CreateProductFormWithFormik from '../Forms/CreateProductFormWithFormik'
 
-class Products extends Component {
-	state = {
-		products: null,
-		// products: [],
-		test: 123,
-		counter: { count: 0 },
-	}
+const LIMIT = 10
 
-	componentDidMount() {
-		const localData = localStorage.getItem('products')
-		if (localData) {
-			this.setState({ products: JSON.parse(localData) })
-		} else {
-			this.setState({ products: data })
+const Products = () => {
+	const [products, setProducts] = useState(null)
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState('')
+	const [page, setPage] = useState(1)
+
+	// useEffect(() => {
+	// 	getProducts()
+	// }, [])
+
+	useEffect(() => {
+		const getProducts = async () => {
+			try {
+				const offset = page * LIMIT - LIMIT
+				setLoading(true)
+				setError('')
+				const data = await getAllProductsApi(offset, LIMIT)
+				setProducts((prev) => (prev ? [...prev, ...data] : data))
+			} catch (error) {
+				console.log(error)
+				setError(error.response.data.message)
+			} finally {
+				setLoading(false)
+			}
+		}
+		getProducts()
+	}, [page])
+
+	const handleDelete = async (id) => {
+		try {
+			setLoading(true)
+			setError('')
+			await deleteProductApi(id)
+		} catch (error) {
+			console.log(error)
+			setError(error.response.data.message)
+		} finally {
+			setLoading(false)
 		}
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevState.products?.length !== this.state.products.length) {
-			localStorage.setItem('products', JSON.stringify(this.state.products))
-		}
+	const createProduct = (data) => {}
 
-		// if (prevState.products.length > this.state.products.length) {
-		// 	console.log('successfully deleted product!')
-		// }
-		// if (prevState.products.length < this.state.products.length) {
-		// 	console.log('successfully added product!')
-		// }
-	}
+	const handleLoadMore = () => setPage((prev) => prev + 1)
 
-	handleDelete = (id) => {
-		this.setState((prev) => ({
-			products: prev.products.filter((el) => el.id !== id),
-			counter: { count: prev.counter.count + 1 },
-		}))
-	}
-
-	createProduct = (data) => {
-		const id = nanoid()
-
-		const newData = { ...data, id }
-		this.setState((prev) => ({
-			products: [newData, ...prev.products],
-		}))
-	}
-	render() {
-		// console.log('this.state :>> ', this.state)
-		return (
-			<>
-				<button
-					onClick={() => this.setState((prev) => ({ counter: { count: prev.counter.count + 1 } }))}
-				>
-					click
+	return (
+		<>
+			<CreateProductForm createProduct={createProduct} />
+			{/* {loading && <h2>Loading...</h2>} */}
+			{loading && <MyLoader />}
+			{error && <h2>error: {error}</h2>}
+			{products && <ProductList handleDelete={handleDelete} products={products} />}
+			{products && (
+				<button onClick={handleLoadMore} className='btn btn-success'>
+					Load more...
 				</button>
-				{/* <CreateProductFormWithFormik createProduct={this.createProduct} /> */}
-				<CreateProductForm createProduct={this.createProduct} counter={this.state.counter} />
-				{this.state.products && (
-					<ProductList handleDelete={this.handleDelete} products={this.state.products} />
-				)}
-			</>
-		)
-	}
+			)}
+		</>
+	)
 }
 
 export default Products
