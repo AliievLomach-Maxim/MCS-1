@@ -1,85 +1,70 @@
-import { Component } from 'react'
-import CreateProductForm from '../Forms/CreateProductForm'
-import ProductList from '../ProductList/ProductList'
+import { useEffect, useState } from 'react'
 import { deleteProductApi, getAllProductsApi } from '../../api/products'
+import CreateProductForm from '../Forms/CreateProductForm'
 import MyLoader from '../Loader'
+import ProductList from '../ProductList/ProductList'
 
 const LIMIT = 10
 
-class Products extends Component {
-	state = {
-		products: null,
-		test: 123,
-		counter: { count: 0 },
-		loading: false,
-		error: '',
-		page: 1,
-	}
+const Products = () => {
+	const [products, setProducts] = useState(null)
+	const [loading, setLoading] = useState(false)
+	const [error, setError] = useState('')
+	const [page, setPage] = useState(1)
 
-	componentDidMount() {
-		this.getProducts()
-	}
+	// useEffect(() => {
+	// 	getProducts()
+	// }, [])
 
-	getProducts = async () => {
-		try {
-			const offset = this.state.page * LIMIT - LIMIT
-			this.setState({ loading: true, error: '' })
-			const data = await getAllProductsApi(offset, LIMIT)
-			this.setState((prev) => ({ products: prev.products ? [...prev.products, ...data] : data }))
-		} catch (error) {
-			console.log(error)
-			// this.setState({ error: error.message })
-			this.setState({ error: error.response.data.message })
-		} finally {
-			this.setState({ loading: false })
+	useEffect(() => {
+		const getProducts = async () => {
+			try {
+				const offset = page * LIMIT - LIMIT
+				setLoading(true)
+				setError('')
+				const data = await getAllProductsApi(offset, LIMIT)
+				setProducts((prev) => (prev ? [...prev, ...data] : data))
+			} catch (error) {
+				console.log(error)
+				setError(error.response.data.message)
+			} finally {
+				setLoading(false)
+			}
 		}
-	}
+		getProducts()
+	}, [page])
 
-	// componentDidMount() {
-	// 	getAllProductsApi().then((data) => this.setState({ products: data }))
-	// }
-
-	componentDidUpdate(prevProps, prevState) {
-		if (prevState.page !== this.state.page) {
-			this.getProducts()
-		}
-	}
-
-	handleDelete = async (id) => {
+	const handleDelete = async (id) => {
 		try {
-			this.setState({ loading: true, error: '' })
+			setLoading(true)
+			setError('')
 			await deleteProductApi(id)
 		} catch (error) {
 			console.log(error)
-			this.setState({ error: error.response.data.message })
+			setError(error.response.data.message)
 		} finally {
-			this.setState({ loading: false })
+			setLoading(false)
 		}
 	}
 
-	createProduct = (data) => {}
+	const createProduct = (data) => {}
 
-	handleLoadMore = () => {
-		this.setState((prev) => ({ page: prev.page + 1 }))
-	}
+	const handleLoadMore = () => setPage((prev) => prev + 1)
 
-	render() {
-		const { loading, products, error } = this.state
-		return (
-			<>
-				<CreateProductForm createProduct={this.createProduct} />
-				{/* {loading && <h2>Loading...</h2>} */}
-				{loading && <MyLoader />}
-				{error && <h2>error: {error}</h2>}
-				{products && <ProductList handleDelete={this.handleDelete} products={products} />}
-				{products && (
-					<button onClick={this.handleLoadMore} className='btn btn-success'>
-						Load more...
-					</button>
-				)}
-			</>
-		)
-	}
+	return (
+		<>
+			<CreateProductForm createProduct={createProduct} />
+			{/* {loading && <h2>Loading...</h2>} */}
+			{loading && <MyLoader />}
+			{error && <h2>error: {error}</h2>}
+			{products && <ProductList handleDelete={handleDelete} products={products} />}
+			{products && (
+				<button onClick={handleLoadMore} className='btn btn-success'>
+					Load more...
+				</button>
+			)}
+		</>
+	)
 }
 
 export default Products

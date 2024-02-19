@@ -1,39 +1,34 @@
 import Header from './components/Header/Header'
 // import Counter from './components/Counter/Counter'
 import Modal from './components/Modal/Modal'
-import { Component } from 'react'
+import { Component, useState } from 'react'
 import Products from './components/Products/Products'
 
-class App extends Component {
-	state = {
-		isShowModal: false,
-	}
+// function useState() {
+// 	return [el,function]
+// }
 
-	toggleModal = () => this.setState((prev) => ({ isShowModal: !prev.isShowModal }))
+const App = () => {
+	const [isShowModal, setIsShowModal] = useState(false)
 
-	render() {
-		return (
-			<div className='container'>
-				<Header showModal={this.showModal} toggleModal={this.toggleModal} />
-				<Products />
-				{this.state.isShowModal && (
-					<Modal hideModal={this.hideModal} toggleModal={this.toggleModal}>
-						some
-					</Modal>
-				)}
-			</div>
-		)
-	}
+	// const toggleModal = () => setIsShowModal(!isShowModal)
+	const toggleModal = () => setIsShowModal((prev) => !prev)
+
+	return (
+		<div className='container'>
+			<Header toggleModal={toggleModal} />
+			<Products />
+			{isShowModal && <Modal toggleModal={toggleModal}>some</Modal>}
+		</div>
+	)
 }
 export default App
 
-// const App = () => {
-// 	return (
-// 		<>
-// 			<Header />
-// 			<Counter />
-// 			{true&&<Modal>some</Modal>}
-// 		</>
-// 	)
+// let user = {
+// 	name:'Alex'
 // }
-// export default App
+// user.name = 'Bob'
+
+// user = {
+// 	name:'Bob'
+// }
