@@ -1,3 +1,4 @@
+
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { CustomContext } from '../../context/Context'
 
@@ -49,5 +50,4 @@ const Modal = ({ children }) => {
 		)
 	)
 }
-
 export default Modal

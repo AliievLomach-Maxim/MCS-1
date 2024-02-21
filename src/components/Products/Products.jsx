@@ -1,8 +1,10 @@
+
 import { useEffect, useMemo, useRef, useState } from 'react'
 import CreateProductForm from '../Forms/CreateProductForm'
 import ProductList from '../ProductList/ProductList'
 import useFetchProducts from '../../hooks/useFetchProducts'
 import MyLoader from '../Loader'
+import ProductList from '../ProductList/ProductList'
 
 const Products = () => {
 	const [page, setPage] = useState(1)
@@ -39,6 +41,7 @@ const Products = () => {
 					Load more...
 				</button>
 			)} */}
+
 		</>
 	)
 }
