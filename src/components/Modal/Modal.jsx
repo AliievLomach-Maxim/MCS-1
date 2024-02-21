@@ -1,28 +1,34 @@
-import { Component } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { CustomContext } from '../../context/Context'
 
-class Modal extends Component {
-	handleClickEsc = (e) => {
-		console.log('click Esc')
-		if (e.code === 'Escape') {
-			this.props.toggleModal()
+const Modal = ({ children }) => {
+	const [counter, setCounter] = useState(0)
+	const { toggleModal, isShowModal } = useContext(CustomContext)
+
+	const handleClickEsc = useCallback(
+		(e) => {
+			console.log('click Esc')
+			if (e.code === 'Escape') {
+				toggleModal()
+			}
+		},
+		[toggleModal]
+	)
+
+	useEffect(() => {
+		document.addEventListener('keydown', handleClickEsc)
+		return () => {
+			document.removeEventListener('keydown', handleClickEsc)
 		}
-	}
-	componentDidMount() {
-		document.addEventListener('keydown', this.handleClickEsc)
-	}
+	}, [handleClickEsc])
 
-	componentWillUnmount() {
-		document.removeEventListener('keydown', this.handleClickEsc)
-	}
+	useEffect(() => {
+		console.log('Update')
+	})
 
-	render() {
-		const { children, toggleModal } = this.props
-		return (
-			<div
-				className='modal fade show'
-				style={{ display: 'block', backdropFilter: 'blur(5px)' }}
-				// onClick={toggleModal}
-			>
+	return (
+		isShowModal && (
+			<div className='modal fade show' style={{ display: 'block', backdropFilter: 'blur(5px)' }}>
 				<div className='modal-dialog'>
 					<div className='modal-content'>
 						<div className='modal-header'>
@@ -31,43 +37,17 @@ class Modal extends Component {
 								type='button'
 								className='btn-close'
 								aria-label='Close'
-								// onClick={() => toggleModal(false)}
 								onClick={toggleModal}
 							></button>
 						</div>
+						<button onClick={() => setCounter((prev) => prev + 1)}>{counter}</button>
 						<div className='modal-body'>{children}</div>
+						<button onClick={handleClickEsc}>qwe</button>
 					</div>
 				</div>
 			</div>
 		)
-	}
+	)
 }
 
 export default Modal
-// const Modal = ({ children, hideModal, toggleModal }) => {
-// 	return (
-// 		<div
-// 			className='modal fade show'
-// 			style={{ display: 'block', backdropFilter: 'blur(5px)' }}
-// 			onClick={toggleModal}
-// 		>
-// 			<div className='modal-dialog'>
-// 				<div className='modal-content'>
-// 					<div className='modal-header'>
-// 						<h5 className='modal-title'> Modal</h5>
-// 						<button
-// 							type='button'
-// 							className='btn-close'
-// 							aria-label='Close'
-// 							// onClick={() => toggleModal(false)}
-// 							onClick={toggleModal}
-// 						></button>
-// 					</div>
-// 					<div className='modal-body'>{children}</div>
-// 				</div>
-// 			</div>
-// 		</div>
-// 	)
-// }
-
-// export default Modal

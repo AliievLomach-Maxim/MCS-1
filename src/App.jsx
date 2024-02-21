@@ -1,39 +1,17 @@
 import Header from './components/Header/Header'
-// import Counter from './components/Counter/Counter'
 import Modal from './components/Modal/Modal'
-import { Component } from 'react'
 import Products from './components/Products/Products'
+import ContextProvider from './context/Context'
 
-class App extends Component {
-	state = {
-		isShowModal: false,
-	}
-
-	toggleModal = () => this.setState((prev) => ({ isShowModal: !prev.isShowModal }))
-
-	render() {
-		return (
+const App = () => {
+	return (
+		<ContextProvider>
 			<div className='container'>
-				<Header showModal={this.showModal} toggleModal={this.toggleModal} />
+				<Header />
 				<Products />
-				{this.state.isShowModal && (
-					<Modal hideModal={this.hideModal} toggleModal={this.toggleModal}>
-						some
-					</Modal>
-				)}
+				<Modal>some</Modal>
 			</div>
-		)
-	}
+		</ContextProvider>
+	)
 }
 export default App
-
-// const App = () => {
-// 	return (
-// 		<>
-// 			<Header />
-// 			<Counter />
-// 			{true&&<Modal>some</Modal>}
-// 		</>
-// 	)
-// }
-// export default App

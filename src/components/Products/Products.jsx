@@ -1,85 +1,46 @@
-import { Component } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import CreateProductForm from '../Forms/CreateProductForm'
 import ProductList from '../ProductList/ProductList'
-import { deleteProductApi, getAllProductsApi } from '../../api/products'
+import useFetchProducts from '../../hooks/useFetchProducts'
 import MyLoader from '../Loader'
 
-const LIMIT = 10
+const Products = () => {
+	const [page, setPage] = useState(1)
 
-class Products extends Component {
-	state = {
-		products: null,
-		test: 123,
-		counter: { count: 0 },
-		loading: false,
-		error: '',
-		page: 1,
-	}
+	const { error, getProducts, isLoading, products } = useFetchProducts()
 
-	componentDidMount() {
-		this.getProducts()
-	}
+	useEffect(() => {
+		getProducts(page)
+	}, [getProducts, page])
 
-	getProducts = async () => {
-		try {
-			const offset = this.state.page * LIMIT - LIMIT
-			this.setState({ loading: true, error: '' })
-			const data = await getAllProductsApi(offset, LIMIT)
-			this.setState((prev) => ({ products: prev.products ? [...prev.products, ...data] : data }))
-		} catch (error) {
-			console.log(error)
-			// this.setState({ error: error.message })
-			this.setState({ error: error.response.data.message })
-		} finally {
-			this.setState({ loading: false })
-		}
-	}
+	const sortedProducts = useMemo(() => {
+		return products?.toSorted((a, b) => {
+			console.log('sorting')
+			return a.price - b.price
+		})
+	}, [products])
 
-	// componentDidMount() {
-	// 	getAllProductsApi().then((data) => this.setState({ products: data }))
-	// }
+	const refObj = useRef()
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevState.page !== this.state.page) {
-			this.getProducts()
-		}
-	}
+	useEffect(() => {
+		refObj.current?.focus()
+	}, [])
 
-	handleDelete = async (id) => {
-		try {
-			this.setState({ loading: true, error: '' })
-			await deleteProductApi(id)
-		} catch (error) {
-			console.log(error)
-			this.setState({ error: error.response.data.message })
-		} finally {
-			this.setState({ loading: false })
-		}
-	}
-
-	createProduct = (data) => {}
-
-	handleLoadMore = () => {
-		this.setState((prev) => ({ page: prev.page + 1 }))
-	}
-
-	render() {
-		const { loading, products, error } = this.state
-		return (
-			<>
-				<CreateProductForm createProduct={this.createProduct} />
-				{/* {loading && <h2>Loading...</h2>} */}
-				{loading && <MyLoader />}
-				{error && <h2>error: {error}</h2>}
-				{products && <ProductList handleDelete={this.handleDelete} products={products} />}
-				{products && (
-					<button onClick={this.handleLoadMore} className='btn btn-success'>
-						Load more...
-					</button>
-				)}
-			</>
-		)
-	}
+	return (
+		<>
+			<input type='text' ref={refObj} />
+			<CreateProductForm />
+			{/* {loading && <h2>Loading...</h2>} */}
+			{isLoading && <MyLoader />}
+			{error && <h2>error: {error}</h2>}
+			{sortedProducts && <ProductList products={sortedProducts} />}
+			{/* {products && (
+				<button onClick={handleLoadMore} className='btn btn-success'>
+					Load more...
+				</button>
+			)} */}
+		</>
+	)
 }
 
 export default Products

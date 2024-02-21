@@ -1,4 +1,9 @@
-const Header = ({ showModal, toggleModal }) => {
+import { useContext } from 'react'
+import { CustomContext } from '../../context/Context'
+
+const Header = ({ showModal }) => {
+	const { toggleModal } = useContext(CustomContext)
+
 	return (
 		<nav className='navbar bg-dark mb-3'>
 			<div className='container-fluid'>
