@@ -8,6 +8,11 @@ export const getAllProductsApi = async (offset, limit) => {
 	return data
 }
 
+export const getSingleProductApi = async (id) => {
+	const { data } = await axios(`products/${id}`)
+	return data
+}
+
 export const deleteProductApi = async (id) => {
 	// const { data } = await axios(`products/${id}`)
 	const { data } = await axios.delete('products', { params: { id } })

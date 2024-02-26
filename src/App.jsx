@@ -1,17 +1,31 @@
-import Header from './components/Header/Header'
-import Modal from './components/Modal/Modal'
-import Products from './components/Products/Products'
-import ContextProvider from './context/Context'
+import { Routes, Route } from 'react-router-dom'
+import MainLayout from './layouts/MainLayout/MainLayout'
+import UserLayout from './layouts/UserLayout/UserLayout'
+import HomePage from './pages/HomePage/HomePage'
+import ProductsPage from './pages/ProductsPage/ProductsPage'
+import UserPage from './pages/UserPage/UserPage'
+import ProductsDetailsPage from './pages/ProductsDetailasPage/ProductsDetailsPage'
 
 const App = () => {
 	return (
-		<ContextProvider>
-			<div className='container'>
-				<Header />
-				<Products />
-				<Modal>some</Modal>
-			</div>
-		</ContextProvider>
+		<>
+			{/* <Header /> */}
+			<Routes>
+				<Route path='/' element={<MainLayout />}>
+					<Route index element={<HomePage />} />
+					<Route path='products' element={<ProductsPage />} />
+					<Route path='products/:productId' element={<ProductsDetailsPage />} />
+					{/* <Route path='products' element={<ProductsPage />}>
+						<Route path=':productId' element={<ProductsDetailsPage />} />
+					</Route> */}
+				</Route>
+				<Route path='/user' element={<UserLayout />}>
+					<Route index element={<UserPage />} />
+				</Route>
+			</Routes>
+			{/* <Footer/> */}
+		</>
 	)
 }
+
 export default App
