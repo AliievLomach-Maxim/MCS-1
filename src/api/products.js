@@ -8,6 +8,11 @@ export const getAllProductsApi = async (offset, limit) => {
 	return data
 }
 
+export const getSearchProductsApi = async (query) => {
+	const { data } = await axios(`products/?title=${query}`)
+	return data
+}
+
 export const getSingleProductApi = async (id) => {
 	const { data } = await axios(`products/${id}`)
 	return data

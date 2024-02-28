@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { getSingleProductApi } from '../../api/products'
 
@@ -7,6 +7,10 @@ const ProductsDetailsPage = () => {
 	const [product, setProduct] = useState(null)
 	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState('')
+
+	const location = useLocation()
+
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		const getSingleProduct = async () => {
@@ -24,6 +28,11 @@ const ProductsDetailsPage = () => {
 		productId && getSingleProduct()
 	}, [productId])
 
+	const handleBack = () => {
+		const isSure = window.confirm('Are you sure?')
+		isSure && navigate(location.state ?? '/products')
+	}
+
 	return loading ? (
 		<h1>loading...</h1>
 	) : error ? (
@@ -31,6 +40,8 @@ const ProductsDetailsPage = () => {
 	) : (
 		product && (
 			<div>
+				{/* <Link to='/products'>Back</Link> */}
+				<button onClick={handleBack}>Back</button>
 				<h1>{product.title}</h1>
 				<p>{product.description}</p>
 				<p>{product.price}</p>

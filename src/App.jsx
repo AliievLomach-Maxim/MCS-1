@@ -4,7 +4,10 @@ import UserLayout from './layouts/UserLayout/UserLayout'
 import HomePage from './pages/HomePage/HomePage'
 import ProductsPage from './pages/ProductsPage/ProductsPage'
 import UserPage from './pages/UserPage/UserPage'
-import ProductsDetailsPage from './pages/ProductsDetailasPage/ProductsDetailsPage'
+// import ProductsDetailsPage from './pages/ProductsDetailasPage/ProductsDetailsPage'
+import { Suspense, lazy } from 'react'
+
+const ProductsDetailsPage = lazy(() => import('./pages/ProductsDetailasPage/ProductsDetailsPage'))
 
 const App = () => {
 	return (
@@ -14,7 +17,15 @@ const App = () => {
 				<Route path='/' element={<MainLayout />}>
 					<Route index element={<HomePage />} />
 					<Route path='products' element={<ProductsPage />} />
-					<Route path='products/:productId' element={<ProductsDetailsPage />} />
+					<Route
+						path='products/:productId'
+						element={
+							<Suspense fallback={<h1>loading...</h1>}>
+								<ProductsDetailsPage />
+							</Suspense>
+						}
+					/>
+					s
 					{/* <Route path='products' element={<ProductsPage />}>
 						<Route path=':productId' element={<ProductsDetailsPage />} />
 					</Route> */}

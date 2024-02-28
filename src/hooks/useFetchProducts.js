@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { deleteProductApi, getAllProductsApi } from '../api/products'
+import { deleteProductApi, getAllProductsApi, getSearchProductsApi } from '../api/products'
 
 const LIMIT = 10
 
@@ -15,6 +15,20 @@ const useFetchProducts = () => {
 			setError('')
 			const data = await getAllProductsApi(offset, LIMIT)
 			setProducts((prev) => (prev ? [...prev, ...data] : data))
+		} catch (error) {
+			console.log(error)
+			setError(error.response.data.message)
+		} finally {
+			setIsLoading(false)
+		}
+	}
+
+	const getSearchProducts = async (query) => {
+		try {
+			setIsLoading(true)
+			setError('')
+			const data = await getSearchProductsApi(query)
+			setProducts(data)
 		} catch (error) {
 			console.log(error)
 			setError(error.response.data.message)
@@ -40,7 +54,7 @@ const useFetchProducts = () => {
 		getProducts(1)
 	}, [])
 
-	return { getProducts, products, isLoading, error, deleteProducts }
+	return { getProducts, products, isLoading, error, deleteProducts, getSearchProducts }
 }
 
 export default useFetchProducts
