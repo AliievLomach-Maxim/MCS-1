@@ -1,10 +1,11 @@
 // import { useCustomContext } from '../../context/Context'
 import useFetchProducts from '../../hooks/useFetchProducts'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const ProductCard = ({ product }) => {
 	// const { toggleModal } = useCustomContext()
 	const { deleteProducts } = useFetchProducts()
+const location = useLocation()
 
 	return (
 		<div className='card' style={{ width: '18rem' }}>
@@ -24,7 +25,7 @@ const ProductCard = ({ product }) => {
 				{/* <Link className='btn btn-success' to='/qwetry/qwertyqwerty/user'>
 					qwrety
 				</Link> */}
-				<Link className='btn btn-success' to={`/products/${product.id}`}>
+				<Link className='btn btn-success' to={`/products/${product.id}`} state={location}>
 					Open Details
 				</Link>
 			</div>
