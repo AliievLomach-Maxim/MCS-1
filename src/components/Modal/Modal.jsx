@@ -1,4 +1,3 @@
-
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { CustomContext } from '../../context/Context'
 
@@ -8,7 +7,6 @@ const Modal = ({ children }) => {
 
 	const handleClickEsc = useCallback(
 		(e) => {
-			console.log('click Esc')
 			if (e.code === 'Escape') {
 				toggleModal()
 			}
@@ -23,9 +21,6 @@ const Modal = ({ children }) => {
 		}
 	}, [handleClickEsc])
 
-	useEffect(() => {
-		console.log('Update')
-	})
 
 	return (
 		isShowModal && (

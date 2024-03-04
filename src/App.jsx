@@ -5,11 +5,22 @@ import HomePage from './pages/HomePage/HomePage'
 import ProductsPage from './pages/ProductsPage/ProductsPage'
 import UserPage from './pages/UserPage/UserPage'
 // import ProductsDetailsPage from './pages/ProductsDetailasPage/ProductsDetailsPage'
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateUserAction } from './store/users/actions'
 
 const ProductsDetailsPage = lazy(() => import('./pages/ProductsDetailasPage/ProductsDetailsPage'))
 
 const App = () => {
+	const { users } = useSelector((state) => state.users)
+	const dispatch = useDispatch()
+	console.log('users :>> ', users)
+
+	useEffect(() => {
+		// dispatch({ payload: [1, 2, 3], type: UPDATE_USER })
+		dispatch(updateUserAction([1, 2, 3]))
+	}, [dispatch])
+
 	return (
 		<>
 			{/* <Header /> */}
