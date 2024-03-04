@@ -16,7 +16,6 @@ const Products = () => {
 	const [page, setPage] = useState(1)
 	const [searchParams, setSearchParams] = useSearchParams()
 
-
 	const getProducts = async (page) => {
 		try {
 			const offset = page * LIMIT - LIMIT
@@ -53,7 +52,6 @@ const Products = () => {
 
 	const sortedProducts = useMemo(() => {
 		return products?.toSorted((a, b) => {
-			console.log('sorting')
 			return a.price - b.price
 		})
 	}, [products])

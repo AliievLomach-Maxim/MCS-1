@@ -112,3 +112,14 @@
 - BackBtn with useLocation
 - location.state
 - lazy & suspense
+
+## Module 6
+
+### Less 1
+
+- how it works
+- install redux
+- install react-redux
+- Provider
+- useSelector
+- useDispatch
