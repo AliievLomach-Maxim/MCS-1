@@ -19,6 +19,9 @@ const Header = ({ showModal }) => {
 					<li>
 						<NavLink to='/user'>User</NavLink>
 					</li>
+					<li>
+						<NavLink to='/todo'>Todo</NavLink>
+					</li>
 				</ul>
 				{/* <button className='btn btn-outline-success' onClick={() => toggleModal(true)}> */}
 				{/* <button className='btn btn-outline-success' onClick={toggleModal}>

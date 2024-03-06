@@ -8,6 +8,7 @@ import UserPage from './pages/UserPage/UserPage'
 import { Suspense, lazy, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUserAction } from './store/users/actions'
+import TodoPage from './pages/TodoPage/TodoPage'
 
 const ProductsDetailsPage = lazy(() => import('./pages/ProductsDetailasPage/ProductsDetailsPage'))
 
@@ -36,7 +37,8 @@ const App = () => {
 							</Suspense>
 						}
 					/>
-					s
+					<Route path='todo' element={<TodoPage />} />
+
 					{/* <Route path='products' element={<ProductsPage />}>
 						<Route path=':productId' element={<ProductsDetailsPage />} />
 					</Route> */}
