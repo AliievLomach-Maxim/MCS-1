@@ -1,4 +1,6 @@
-import { UPDATE_USER } from './types'
+import { createReducer } from '@reduxjs/toolkit'
+import { UPDATE_USER, DELETE_USER } from './types'
+import { deleteUserAction } from './actions'
 
 // export const usersReducer = (state = { users: null }, { type, payload }) => {
 const initialState = { users: null, user: null, page: 1 }
@@ -25,3 +27,22 @@ export const usersReducer = (state, { type, payload }) => {
 			return initialState
 	}
 }
+
+// export const newUsersReducer = createReducer(initialState, (builder) => {
+// 	builder
+// 		.addCase(deleteUserAction, (state, { payload }) => {
+// 			return {
+// 				...state,
+// 				user: payload,
+// 			}
+// 		})
+// 		// .addCase()
+// })
+// export const newUsersReducer = createReducer(initialState, {
+// 	[deleteUserAction]: (state, { payload }) => {
+// 		return {
+// 			...state,
+// 			users: payload,
+// 		}
+// 	},
+// })

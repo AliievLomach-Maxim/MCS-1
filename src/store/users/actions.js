@@ -1,3 +1,4 @@
+import { createAction } from '@reduxjs/toolkit'
 import { CREATE_NEW_USER, DELETE_USER, UPDATE_USER } from './types'
 
 export const updateUserAction = (body) => {
@@ -6,6 +7,8 @@ export const updateUserAction = (body) => {
 export const createNewUsersAction = (body) => {
 	return { payload: body, type: CREATE_NEW_USER }
 }
-export const deleteUserAction = (body) => {
-	return { payload: body, type: DELETE_USER }
-}
+// export const deleteUserAction = (body) => {
+// 	return { payload: body, type: DELETE_USER }
+// }
+
+export const deleteUserAction = createAction('deleteUser')
