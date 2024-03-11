@@ -1,80 +1,51 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProductList from '../ProductList/ProductList'
 // import useFetchProducts from '../../hooks/useFetchProducts'
 import MyLoader from '../Loader'
 import SearchProductForm from '../Forms/SearchProductForm'
-import { useSearchParams } from 'react-router-dom'
-import { getAllProductsApi, getSearchProductsApi } from '../../api/products'
+import { getAllProductsApi } from '../../api/products'
+import { useDispatch, useSelector } from 'react-redux'
+import { createProductThunk, getProductsThunk } from '../../store/products/thunks'
 
 const LIMIT = 10
 
 const Products = () => {
-	const [isLoading, setIsLoading] = useState(false)
-	const [error, setError] = useState('')
-	const [products, setProducts] = useState(null)
+	// const [isLoading, setIsLoading] = useState(false)
+	// const [error, setError] = useState('')
+	// const [products, setProducts] = useState(null)
 
-	const [page, setPage] = useState(1)
-	const [searchParams, setSearchParams] = useSearchParams()
+	const { products, isLoading, error } = useSelector((store) => store.products)
 
-	const getProducts = async (page) => {
-		try {
-			const offset = page * LIMIT - LIMIT
-			setIsLoading(true)
-			setError('')
-			const data = await getAllProductsApi(offset, LIMIT)
-			setProducts((prev) => (prev ? [...prev, ...data] : data))
-		} catch (error) {
-			console.log(error)
-			setError(error.response.data.message)
-		} finally {
-			setIsLoading(false)
-		}
-	}
+	const dispatch = useDispatch()
 
-	const query = useMemo(() => searchParams.get('search'), [searchParams])
-
-	useEffect(() => {
-		const getSearchProducts = async (query) => {
-			try {
-				setIsLoading(true)
-				setError('')
-				const data = await getSearchProductsApi(query)
-				setProducts(data)
-			} catch (error) {
-				console.log(error)
-				setError(error.response.data.message)
-			} finally {
-				setIsLoading(false)
-			}
-		}
-		query ? getSearchProducts(query) : getProducts(page)
-	}, [page, query])
-
-	const sortedProducts = useMemo(() => {
-		return products?.toSorted((a, b) => {
-			return a.price - b.price
-		})
-	}, [products])
-
-	const refObj = useRef()
+	// const getProducts = async (page = 1) => {
+	// 	try {
+	// 		const offset = page * LIMIT - LIMIT
+	// 		setIsLoading(true)
+	// 		setError('')
+	// 		const data = await getAllProductsApi(offset, LIMIT)
+	// 		setProducts((prev) => (prev ? [...prev, ...data] : data))
+	// 	} catch (error) {
+	// 		console.log(error)
+	// 		setError(error.response.data.message)
+	// 	} finally {
+	// 		setIsLoading(false)
+	// 	}
+	// }
 
 	useEffect(() => {
-		refObj.current?.focus()
-	}, [])
-
-	const handlePage = () => {
-		const prevParams = Object.fromEntries([...searchParams])
-		setSearchParams({ ...prevParams, page: '1' })
-	}
+		// getProducts()
+		dispatch(getProductsThunk())
+		// dispatch(createProductThunk({name,descri,title,age}))
+	}, [dispatch])
 
 	return (
 		<>
 			{/* <CreateProductForm /> */}
-			<button onClick={handlePage}>SetPage</button>
 			<SearchProductForm />
 			{isLoading && <MyLoader />}
 			{error && <h2>error: {error}</h2>}
-			{sortedProducts && <ProductList products={sortedProducts} />}
+			{products && <ProductList products={products} />}
 		</>
 	)
 }
