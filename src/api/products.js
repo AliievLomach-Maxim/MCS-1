@@ -1,26 +1,30 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'https://api.escuelajs.co/api/v1/'
+// axios.defaults.baseURL =
 // const baseURL = 'https://api.escuelajs.co/api/v1'
 
+const instanceProducts = axios.create({
+	baseURL: 'https://api.escuelajs.co/api/v1/',
+})
+
 export const getAllProductsApi = async (offset, limit) => {
-	const { data } = await axios(`products?offset=${offset}&limit=${limit}`)
+	const { data } = await instanceProducts(`products?offset=${offset}&limit=${limit}`)
 	return data
 }
 
 export const getSearchProductsApi = async (query) => {
-	const { data } = await axios(`products/?title=${query}`)
+	const { data } = await instanceProducts(`products/?title=${query}`)
 	return data
 }
 
 export const getSingleProductApi = async (id) => {
-	const { data } = await axios(`products/${id}`)
+	const { data } = await instanceProducts(`products/${id}`)
 	return data
 }
 
 export const deleteProductApi = async (id) => {
-	// const { data } = await axios(`products/${id}`)
-	const { data } = await axios.delete('products', { params: { id } })
+	// const { data } = await instanceProducts(`products/${id}`)
+	const { data } = await instanceProducts.delete('products', { params: { id } })
 	return data
 }
 

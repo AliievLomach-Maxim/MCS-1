@@ -1,51 +1,50 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import ProductList from '../ProductList/ProductList'
-// import useFetchProducts from '../../hooks/useFetchProducts'
 import MyLoader from '../Loader'
 import SearchProductForm from '../Forms/SearchProductForm'
-import { getAllProductsApi } from '../../api/products'
 import { useDispatch, useSelector } from 'react-redux'
-import { createProductThunk, getProductsThunk } from '../../store/products/thunks'
-
-const LIMIT = 10
+import { getProductsThunk } from '../../store/products/thunks'
+import {
+	selectAllProducts,
+	selectFilterValueProducts,
+	selectSortedProducts,
+} from '../../store/products/selectors'
 
 const Products = () => {
-	// const [isLoading, setIsLoading] = useState(false)
-	// const [error, setError] = useState('')
-	// const [products, setProducts] = useState(null)
+	const [counter, setCounter] = useState(0)
 
-	const { products, isLoading, error } = useSelector((store) => store.products)
+	const { isLoading, error } = useSelector(selectAllProducts)
+	const sortedProducts = useSelector(selectSortedProducts)
+	// const filterValue = useSelector(selectFilterValueProducts)
 
 	const dispatch = useDispatch()
 
-	// const getProducts = async (page = 1) => {
-	// 	try {
-	// 		const offset = page * LIMIT - LIMIT
-	// 		setIsLoading(true)
-	// 		setError('')
-	// 		const data = await getAllProductsApi(offset, LIMIT)
-	// 		setProducts((prev) => (prev ? [...prev, ...data] : data))
-	// 	} catch (error) {
-	// 		console.log(error)
-	// 		setError(error.response.data.message)
-	// 	} finally {
-	// 		setIsLoading(false)
-	// 	}
-	// }
-
 	useEffect(() => {
-		// getProducts()
 		dispatch(getProductsThunk())
-		// dispatch(createProductThunk({name,descri,title,age}))
 	}, [dispatch])
+
+	// const sortedProducts = useMemo(
+	// 	() =>
+	// 		products?.toSorted((a, b) => {
+	// 			console.log('sorting')
+	// 			for (let i = 0; i < 10000000; i++) {}
+	// 			return a.price - b.price
+	// 		}),
+	// 	[products]
+	// )
+
+	// const filteredProducts = sortedProducts?.filter((el) =>
+	// 	el.name.toLowerCase().includes(filterValue.toLowerCase())
+	// )
 
 	return (
 		<>
+			<button onClick={() => setCounter((prev) => prev + 1)}>{counter}</button>
 			{/* <CreateProductForm /> */}
 			<SearchProductForm />
 			{isLoading && <MyLoader />}
 			{error && <h2>error: {error}</h2>}
-			{products && <ProductList products={products} />}
+			{sortedProducts && <ProductList products={sortedProducts} />}
 		</>
 	)
 }
